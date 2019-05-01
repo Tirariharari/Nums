@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1556711645 source:c:\programs\nums\lab4_1\main.cpp
+	<iostream>
+	<fstream>
+	<math.h>
+
