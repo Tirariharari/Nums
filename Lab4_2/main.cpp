@@ -79,34 +79,30 @@ double q_G_search (double q, int n_counter){  /// Поиск коэффициента (q+n-1)*...
     return qn;
 }
 
-double Gauss (double sought_x) {  // Не работает! Понять, почему
+double Gauss (double sought_x) {
     double res = 0;
     int idx_closest_x = 0;
     double q = 1;
     double qn = 1;
 
     /// Поиск ближайшего значения x
-    /*
     for (int j=0; j<n; j++){
         if (fabs(X[j]-sought_x) < fabs(X[idx_closest_x]-sought_x)) {
             idx_closest_x = j;
         }
     }
-    */
-
-    idx_closest_x = 2;
     q = (sought_x-X[idx_closest_x])/(X[1]-X[0]);
-    cout << q << endl;
+    //cout << q << endl;
 
-    for (int i=0, j=0; i<=2*idx_closest_x; i++) {
-        qn = q_G_search(q, i); // Не уверена в правильной работе
-        res = res + qn*(delta_y[idx_closest_x-j][i])/factorial(i);  // Как устроена delta_y
+    for (int i=0, j=0; i<2*idx_closest_x; i++) {
+        qn = q_G_search(q, i);
+        res = res + qn*(delta_y[idx_closest_x-j][i])/factorial(i);
         if (i%2==1)
             j++;
-        qn = 1; // Зачем
+        qn = 1;
     }
 
-    return res;
+    return res + Y[idx_closest_x];
 }
 
 double q_S_search (double q, int n_counter) {  /// Поиск коэффициента (q+n-1)*...*(q-n) для формулы Стирлинга
@@ -159,8 +155,48 @@ double Stirling (double sought_x) {
     return res;
 }
 
+double q_B_search (double p, int n_counter) {  /// Поиск коэффициента (q+n-1)*...*(q-n) для формулы Бесселя
+    /*
+    double res = 1;
+    for (int i=1; i<n_counter; i++){
+        res = res*(pow(p, 2) - (pow(i, 2)/4));
+    }
+    return res;
+    */
+}
+
 double Bessel (double sought_x) {
+    /*
+    /// Поиск ближайшего x
+    double res = 0;
+    int idx_closest_x = 0;
+    for (int j=0; j<n; j++){
+        if (fabs(X[j]-sought_x) < fabs(X[idx_closest_x]-sought_x)) {
+            idx_closest_x = j;
+        }
+    }
+
+    /// Вычисление q (шаг)
+    double q = 1;
+    q = (sought_x-X[idx_closest_x])/(X[1]-X[0]);
+    double p = q - 0.5;
+
+    for (int i = 0, j = 0; i < 2*idx_closest_x; i++){
+        double coeff;
+        //
+        double y = 0;
+
+        if (i%2 == 1){
+            j++;
+            //y =
+        } else {
+            //y =
+        }
+        res += coeff*y;
+    }
+    return res;
     return 0;
+    */
 }
 
 int main() {
@@ -169,17 +205,15 @@ int main() {
     delta_y_creation ();
 
     sought_x=1.60+(0.006*3);
-    /*
     cout << sought_x << endl;
     cout << "Gauss : " << Gauss (sought_x) << endl;
-    */
+
     sought_x=1.725+(0.002*3);
     cout << sought_x << endl;
     cout << "Stirling : " << Stirling (sought_x) << endl;
-    /*
-    sought_x=1.83+(0.003*3);
+
+    sought_x=1.83+(0.003*3);  /// -
     cout << sought_x << endl;
-    cout << "Bessel : " << Bessel(sought_x) << endl;
-    */
+    cout << "Bessel : " << Bessel (sought_x) << endl;
     return 0;
 }
